@@ -24,13 +24,13 @@ import java.sql.SQLException;
  * @author Clinton Begin
  */
 public interface TypeHandler<T> {
-
+  //设置参数
   void setParameter(PreparedStatement ps, int i, T parameter, JdbcType jdbcType) throws SQLException;
-
+  //获取结果，通过名字
   T getResult(ResultSet rs, String columnName) throws SQLException;
-
+  //通过索引
   T getResult(ResultSet rs, int columnIndex) throws SQLException;
-
+  //用于处理存储过程的
   T getResult(CallableStatement cs, int columnIndex) throws SQLException;
 
 }
