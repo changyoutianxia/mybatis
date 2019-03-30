@@ -61,6 +61,7 @@ public class ManagedTransaction implements Transaction {
     }
     return this.connection;
   }
+  //下面两个方法交由容器处理
 
   @Override
   public void commit() throws SQLException {

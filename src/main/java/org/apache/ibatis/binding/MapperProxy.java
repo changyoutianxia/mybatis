@@ -27,6 +27,8 @@ import org.apache.ibatis.reflection.ExceptionUtil;
 import org.apache.ibatis.session.SqlSession;
 
 /**
+ * InvocationHandler
+ * 用于动态代理
  * @author Clinton Begin
  * @author Eduardo Macarron
  */
@@ -34,6 +36,7 @@ public class MapperProxy<T> implements InvocationHandler, Serializable {
 
   private static final long serialVersionUID = -6424540398559729838L;
   private final SqlSession sqlSession;
+  //接口
   private final Class<T> mapperInterface;
   private final Map<Method, MapperMethod> methodCache;
 
@@ -46,18 +49,26 @@ public class MapperProxy<T> implements InvocationHandler, Serializable {
   @Override
   public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
     try {
+      //Object的方法直接放过
       if (Object.class.equals(method.getDeclaringClass())) {
         return method.invoke(this, args);
+        //java7以上动态语言的支持
       } else if (isDefaultMethod(method)) {
         return invokeDefaultMethod(proxy, method, args);
       }
     } catch (Throwable t) {
       throw ExceptionUtil.unwrapThrowable(t);
     }
+    //从缓存中获取
     final MapperMethod mapperMethod = cachedMapperMethod(method);
     return mapperMethod.execute(sqlSession, args);
   }
 
+  /**
+   * 获取MapperMethod对象，如果存在就返回，不存在就创建新的
+   * @param method
+   * @return
+   */
   private MapperMethod cachedMapperMethod(Method method) {
     return methodCache.computeIfAbsent(method, k -> new MapperMethod(mapperInterface, method, sqlSession.getConfiguration()));
   }

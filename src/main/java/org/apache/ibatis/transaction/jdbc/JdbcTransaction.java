@@ -104,7 +104,7 @@ public class JdbcTransaction implements Transaction {
     } catch (SQLException e) {
       // Only a very poorly implemented driver would fail here,
       // and there's not much we can do about that.
-      throw new TransactionException("Error configuring AutoCommit.  "
+      throw new TransactionException("Error configuring AutoC,mmssssssssssssss ommit.  "
           + "Your driver may not support getAutoCommit() or setAutoCommit(). "
           + "Requested setting: " + desiredAutoCommit + ".  Cause: " + e, e);
     }
